@@ -1,0 +1,40 @@
+[
+  {
+    "httpRequest": {
+      "method": "post",
+      "path": "/authorized",
+      "body": {
+        "type": "JSON",
+        "json": {
+          "accountId": "${json-unit.ignore-element}",
+          "amount": "${json-unit.ignore-element}"
+        }
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "body": {
+        "authorized": true
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "post",
+      "path": "/unauthorized",
+      "body": {
+        "type": "JSON",
+        "json": {
+          "accountId": "${json-unit.ignore-element}",
+          "amount": "${json-unit.ignore-element}"
+        }
+      }
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "body": {
+        "authorized": "false"
+      }
+    }
+  }
+]
