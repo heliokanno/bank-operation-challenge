@@ -6,7 +6,7 @@ import com.hmk.challenge.bank.business.domain.exception.UnauthorizedTransactionE
 import com.hmk.challenge.bank.business.port.in.SendTransferUseCase;
 import com.hmk.challenge.bank.business.port.out.AccountDataProvider;
 import com.hmk.challenge.bank.business.port.out.NotifyTransactionClient;
-import com.hmk.challenge.bank.business.port.out.TransactionAuthorizeClient;
+import com.hmk.challenge.bank.business.port.out.TransactionAuthorizationClient;
 import com.hmk.challenge.bank.business.port.out.TransactionDataProvider;
 import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 class SendTransferUseCaseImpl implements SendTransferUseCase {
     private final TransactionDataProvider transactionDataProvider;
     private final AccountDataProvider accountDataProvider;
-    private final TransactionAuthorizeClient transactionAuthorizeClient;
+    private final TransactionAuthorizationClient transactionAuthorizationClient;
     private final NotifyTransactionClient notifyTransactionClient;
 
     @Transactional
@@ -25,7 +25,7 @@ class SendTransferUseCaseImpl implements SendTransferUseCase {
     public Transaction execute(Transaction transaction) {
         transaction.selfValidation();
 
-        var authorized = transactionAuthorizeClient.authorize(transaction.getSourceAccountId(), transaction.getAmount());
+        var authorized = transactionAuthorizationClient.authorize(transaction.getSourceAccountId(), transaction.getAmount());
         if (!authorized) {
             throw new UnauthorizedTransactionException();
         }
